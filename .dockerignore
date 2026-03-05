@@ -1,0 +1,16 @@
+__pycache__/
+.git/
+.gitignore
+.venv/
+venv/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+Thumbs.db
+
+Industrial-TEXT-OCR/
+OCR-2Stage/
+output/
+runs/
+images/

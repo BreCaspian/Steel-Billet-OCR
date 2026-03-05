@@ -1,0 +1,333 @@
+PROPRIETARY NON-COMMERCIAL LICENSE (ALL RIGHTS RESERVED)
+Version: 1.3
+Effective Date: 2026-02-12
+
+Copyright (c) 2026
+YAO YUZHUO (姚宇倬) and North China University of Science and Technology (华北理工大学)
+All rights reserved.
+
+IMPORTANT NOTICE
+THIS SOFTWARE IS NOT OPEN SOURCE. The Authors reserve all rights.
+Unless (i) this License expressly permits an activity AND (ii) the Authors have granted You
+prior written authorization, You may use the Software ONLY for non-commercial testing or
+academic exchange. Any Commercial Use is prohibited. Redistribution, publication, disclosure,
+modification, derivative works, and sublicensing are strictly prohibited without the Authors'
+prior written authorization.
+
+------------------------------------------------------------
+1. DEFINITIONS
+------------------------------------------------------------
+1.1 "Authors" means YAO YUZHUO (姚宇倬) and North China University of Science and Technology (华北理工大学).
+
+1.2 "Software" means all materials in this repository that are owned by the Authors, including but not limited to:
+source code, scripts, configuration files, documentation, training/inference logic, API services, examples, and related
+materials, as well as associated model files, weights, Docker build files, and build/deployment artifacts.
+For clarity: Third-party components (including but not limited to operating system packages and Python packages obtained
+via apt/pip/conda or otherwise) remain subject to their own licenses. The Authors do not claim ownership of third-party
+components, and nothing in this License modifies third-party license terms.
+
+1.3 "You" means the individual or legal entity exercising rights under this License.
+
+1.4 "Non-Commercial" means use that is not intended for, and does not result in, commercial advantage or monetary
+compensation. "Non-Commercial" does not mean "free of charge." Use by or for a commercial organization, in production,
+in business operations, in contract delivery, or to provide services to any third party may constitute Commercial Use.
+
+1.5 "Commercial Use" means any use intended for or resulting in commercial advantage or monetary compensation,
+including, without limitation: (a) production or business deployment; (b) providing services to third parties (including
+API, SaaS, hosting, managed deployment, outsourcing delivery, consulting delivery, or remote invocation); (c) sale,
+resale, licensing, sublicensing, bundling, or tender delivery; (d) use in paid training, paid courses, paid materials,
+commercial exhibitions, or commercial demonstrations; (e) using the Software or its outputs as a core or significant
+component of any commercial product or service; or (f) any use related to profit-oriented operations unless explicitly
+authorized in writing by the Authors.
+
+1.6 "Written Authorization" means an explicit written permission granted by the Authors (paper document with signature/
+seal, or an electronic document/email/announcement explicitly confirmed by the Authors) that specifies scope, duration,
+permitted activities, and the authorized party. Oral permission is not valid.
+
+------------------------------------------------------------
+2. OWNERSHIP
+------------------------------------------------------------
+The Software is owned by the Authors. All right, title, and interest in and to the Software remain with the Authors.
+No rights are granted except as expressly stated in this License and in the Authors' Written Authorization.
+
+------------------------------------------------------------
+3. LIMITED LICENSE GRANT (NON-COMMERCIAL ONLY)
+------------------------------------------------------------
+Subject to strict compliance with this License AND the Authors' prior Written Authorization, the Authors grant You a
+limited, non-exclusive, non-transferable, non-sublicensable, revocable license to use the Software solely for:
+(a) non-commercial testing, evaluation, and validation; and/or
+(b) teaching, coursework experiments, and academic research; and/or
+(c) academic exchange as described in Section 5.
+
+Any use outside the above scope is prohibited unless separately authorized in writing by the Authors.
+
+------------------------------------------------------------
+4. RESTRICTIONS (CORE TERMS)
+------------------------------------------------------------
+Unless expressly authorized in writing by the Authors, You must not, directly or indirectly:
+
+4.1 Commercial Use
+Use the Software for any Commercial Use.
+
+4.2 No Redistribution / No Making Available to Third Parties
+Distribute, publish, disclose, share, upload, mirror, transfer, loan, lease, or otherwise make the Software available to
+any third party in any form, including but not limited to source code, binaries, executables, model files, weight files,
+training outputs, Docker images/containers, deployment packages, offline packages, or any materials or access methods that
+enable a third party to obtain, use, reproduce, or reconstruct the Software.
+For avoidance of doubt: providing access via a service (including API, SaaS, hosted/managed service, remote invocation, or
+any form of "software as a service") to any third party is prohibited.
+
+4.3 No Modification / No Derivatives / No Re-release
+Modify, adapt, translate, refactor, rewrite, merge, or otherwise change the Software; create derivative works based on the
+Software; or re-release, re-publish, re-distribute, sublicense, or transfer any rights in the Software.
+
+4.4 No Reverse Engineering / No Circumvention
+Reverse engineer, decompile, disassemble, or attempt to derive source code or underlying ideas; or circumvent or defeat
+any access control, licensing limitation, or protective measure.
+
+4.5 No Removal of Notices
+Remove, obscure, or alter any copyright, trademark, proprietary, attribution, license, or ownership notices.
+
+------------------------------------------------------------
+5. ACADEMIC EXCHANGE EXCEPTION (NO SOFTWARE DISTRIBUTION)
+------------------------------------------------------------
+Under the Non-Commercial limitation, You may publish academic results, evaluations, benchmarks, performance metrics,
+figures, screenshots, and conclusions derived from using the Software, provided that You:
+(a) do NOT disclose or distribute the Software itself (including source code, models, weights, Docker images, deployment
+packages, or any reproducible delivery); and
+(b) do NOT provide any material, link, mirror, access method, or instructions that enable others to reproduce or rebuild
+the Software; and
+(c) provide reasonable attribution to the Authors.
+
+This exception does NOT grant any right to distribute the Software.
+
+------------------------------------------------------------
+6. TERMINATION
+------------------------------------------------------------
+Any breach of this License or any Written Authorization immediately and automatically terminates Your rights under this
+License without notice. Upon termination, You must immediately cease all use of the Software and destroy/delete all copies
+in Your possession or control, including backups and artifacts (code, models, weights, images, build outputs).
+
+------------------------------------------------------------
+7. DISCLAIMER OF WARRANTY
+------------------------------------------------------------
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. YOU BEAR ALL RISK ARISING FROM
+USE OF THE SOFTWARE.
+
+------------------------------------------------------------
+8. LIMITATION OF LIABILITY
+------------------------------------------------------------
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE, INCLUDING WITHOUT LIMITATION ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, PUNITIVE, OR CONSEQUENTIAL DAMAGES, LOST PROFITS, LOST DATA, OR BUSINESS INTERRUPTION.
+
+------------------------------------------------------------
+9. AUTHORIZATION FOR OTHER USES
+------------------------------------------------------------
+Any use not expressly permitted by this License (including any Commercial Use, redistribution, disclosure, modification,
+derivative works, re-release, or providing services) requires the Authors' explicit prior Written Authorization, which may
+impose additional terms such as scope, duration, geographic limitation, deployment limits, confidentiality, audit rights,
+and fees.
+
+------------------------------------------------------------
+10. LICENSE SCOPE & PRIOR VERSIONS
+------------------------------------------------------------
+This License applies to versions of the Software released by the Authors on or after the Effective Date under this License.
+If prior versions of this repository were released under different license terms (e.g., MIT), those prior versions may
+remain governed by their original license terms. This License does not retroactively revoke rights previously granted
+under a prior license for copies already obtained under that prior license.
+
+------------------------------------------------------------
+11. GOVERNING LANGUAGE
+------------------------------------------------------------
+This License is provided in English and Chinese. In case of any inconsistency, the Chinese text shall prevail.
+
+------------------------------------------------------------
+12. CONTACT
+------------------------------------------------------------
+For Written Authorization requests (including commercial licensing), contact the Authors:
+yaoyuzhuo6@gmail.com
+
+------------------------------ END OF ENGLISH TERMS ------------------------------
+
+
+专有非商业许可协议（保留所有权利 / All Rights Reserved）
+版本：1.3
+生效日期：2026-02-12
+
+版权所有 (c) 2026
+YAO YUZHUO（姚宇倬）与 华北理工大学
+保留所有权利。
+
+重要声明
+本软件不是开源软件，作者保留所有权利。
+除非同时满足：(i) 本协议明确允许相关行为，且 (ii) 你已取得作者事先书面授权，
+否则你仅可将本软件用于非营利性测试或学术交流。任何营利性商业用途均被禁止。
+未经作者事先书面授权，严禁传播、公开发布、披露、修改、制作衍生作品以及任何形式的再许可。
+
+------------------------------------------------------------
+1. 定义
+------------------------------------------------------------
+1.1 “作者”：
+指 YAO YUZHUO（姚宇倬）与华北理工大学。
+
+1.2 “软件”：
+指本仓库中由作者享有著作权的全部内容，包括但不限于：源代码、脚本、配置文件、文档说明、
+训练/推理逻辑、API 服务、示例与相关材料，以及与之相关的模型文件、权重、Docker 构建文件与
+构建/部署产物等。
+为避免歧义：第三方组件（包括但不限于通过 apt/pip/conda 等方式获得的操作系统包与 Python 包）
+仍受其各自许可证约束。作者不主张对第三方组件拥有版权，本协议亦不改变第三方许可证条款。
+
+1.3 “你/被许可方”：
+指行使或试图行使本协议项下权利的任何个人或法人/组织。
+
+1.4 “非商业/非营利”：
+指不以直接或间接的商业利益、收入、报酬或商业优势为目的或结果的使用。“非商业”不等同于“免费”：
+即便不收费，只要用于生产环境、商业机构业务运营、商业项目交付、支撑商业合同、或向第三方提供服务等，
+均可能构成商业用途。
+
+1.5 “商业用途/营利性商业用途”：
+指任何以商业利益为目的或导致商业利益的使用，包括但不限于：
+(1) 生产环境/业务系统部署或上线；
+(2) 向第三方提供服务（含 API、SaaS、托管运行、代部署、外包交付、咨询交付或远程调用等）；
+(3) 销售、转售、许可、再许可、捆绑销售、招投标交付；
+(4) 在商业培训、付费课程、付费教材、商业展会或商业演示中使用；
+(5) 以本软件或其输出作为商业产品/服务的核心或重要组成；
+(6) 任何与盈利性组织经营活动相关的使用（除非作者书面授权明确允许）。
+
+1.6 “书面授权”：
+指作者以书面形式（纸质签章文件或作者明确确认的电子文本/邮件/公告等）授予你特定范围、特定期限、
+特定对象与特定用途的许可。口头许可无效。
+
+------------------------------------------------------------
+2. 权利归属
+------------------------------------------------------------
+本软件的一切权利、所有权与利益（包括但不限于著作权及相关权利）均归作者所有。
+除本协议及作者书面授权明确授予的权利外，作者保留所有权利。
+
+------------------------------------------------------------
+3. 有限许可授予（仅限非商业）
+------------------------------------------------------------
+在你严格遵守本协议全部条款且已取得作者事先书面授权的前提下，
+作者授予你一项有限的、非排他的、不可转让的、不可再许可的、可撤销的许可，
+仅可用于：
+(1) 非商业/非营利的测试、评估、验证；
+(2) 教学、课程实验与学术研究；
+(3) 学术交流（见第 5 条）。
+
+除上述范围外，任何使用均被禁止，除非作者另行书面授权。
+
+------------------------------------------------------------
+4. 禁止行为（核心条款）
+------------------------------------------------------------
+除非作者事先书面授权明确允许，你不得直接或间接从事下列任何行为：
+
+4.1 禁止商业用途
+不得将本软件用于任何商业用途。
+
+4.2 禁止传播/向第三方提供
+不得以任何形式向任何第三方提供、传播、公开发布、披露、共享、上传、镜像、转让、出借、出租或以其他
+方式使第三方获得或使用本软件，包括但不限于：
+- 源代码、二进制、可执行文件；
+- 模型文件、权重文件、训练产物；
+- Docker 镜像/容器、部署包、离线包；
+- 任何足以使第三方获得、使用、复现或重建本软件的材料、链接、镜像地址、访问方式或操作指引。
+特别强调：不得以“对外提供接口/服务”的方式让任何第三方使用（包括 API、SaaS、托管/代运维服务、
+远程调用等）。
+
+4.3 禁止修改/衍生/二次发行
+不得修改、改编、翻译、重构、重写、合并或以其他方式更改本软件；
+不得基于本软件制作任何衍生作品；
+不得二次发行、再发布、再分发、再授权或转授权本软件或其任何部分。
+
+4.4 禁止逆向与规避
+不得反向工程、反编译、反汇编，不得试图获取源代码或底层思想；
+不得绕过或破坏任何访问控制、许可限制或保护措施。
+
+4.5 禁止移除声明
+不得移除、遮蔽或更改任何版权、商标、专有声明、署名/归属、许可声明或权利标识。
+
+------------------------------------------------------------
+5. 学术交流例外（不得分发软件）
+------------------------------------------------------------
+在符合“非商业/非营利”前提下，你可以发表基于本软件得到的学术成果（例如论文、报告、评测结论、性能指标、
+对比实验结果、图表、截图等），但必须同时满足：
+(1) 不披露、不分发本软件本体（含源代码、模型/权重、Docker 镜像、部署包等任何可复现交付物）；
+(2) 不提供任何可使他人复现或重建本软件的材料、链接、镜像地址、访问方式或操作指引；
+(3) 合理标注作者归属与来源（不构成授权或许可）。
+
+本条款不授予任何分发本软件的权利。
+
+------------------------------------------------------------
+6. 终止
+------------------------------------------------------------
+如你违反本协议或作者书面授权的任何条款，你在本协议项下的许可权利将立即、自动终止，无需另行通知。
+终止后你必须立即停止使用本软件，并销毁/删除你控制范围内的全部副本与相关材料（包括备份与产物：
+代码、模型、权重、镜像、构建输出等）。
+
+------------------------------------------------------------
+7. 免责声明
+------------------------------------------------------------
+本软件按“现状”提供，不提供任何明示或默示担保，包括但不限于适销性、特定用途适用性、不侵权担保等。
+你自行承担使用本软件的一切风险。
+
+------------------------------------------------------------
+8. 责任限制
+------------------------------------------------------------
+在法律允许的最大范围内，作者不对因使用或无法使用本软件而产生的任何索赔、损害或其他责任承担责任，
+无论该责任基于合同、侵权或其他原因，包括但不限于直接损失、间接损失、附带损失、特殊损失、惩罚性损失、
+后果性损失、利润损失、数据丢失或业务中断等。
+
+------------------------------------------------------------
+9. 其他用途的授权
+------------------------------------------------------------
+任何不在本协议明示许可范围内的用途（包括但不限于任何商业用途、传播/披露、修改、制作衍生作品、二次发行、
+对外提供服务等）均必须事先取得作者明确的书面授权。作者可附加额外条款（如范围、期限、地域、部署数量、
+保密义务、审计权、费用等）。
+
+------------------------------------------------------------
+10. 许可适用范围与历史版本
+------------------------------------------------------------
+本协议适用于作者在生效日期及之后以本协议发布的软件版本。
+若本仓库历史版本曾以其他许可证（例如 MIT）发布，则历史版本仍可能受其当时许可证约束；
+本协议不追溯撤销历史许可证对已获得副本所授予的权利。
+
+------------------------------------------------------------
+11. 适用语言
+------------------------------------------------------------
+本协议先以英文列明条款，后提供中文条款。两种语言均为文本内容的一部分。
+如中英文存在不一致或解释差异，以中文条款为准。
+
+------------------------------------------------------------
+12. 联系方式
+------------------------------------------------------------
+如需申请书面授权（含商业授权），请联系作者：
+yaoyuzhuo6@gmail.com
+
+------------------------------ 协议结束 ------------------------------
+
+
+必要约束与说明（补充条款）
+A. No Implied Rights / 无默示授权
+No rights are granted by implication, estoppel, or otherwise. Any permission not explicitly granted is reserved.
+除本协议及作者书面授权明确授予的权利外，不存在任何默示授权或基于禁止反言等产生的权利。
+
+B. Third-Party Materials / 第三方材料
+Third-party software, trademarks, and other materials remain the property of their respective owners and are governed by
+their respective licenses. You are responsible for complying with all applicable third-party license obligations.
+第三方软件、商标及其他材料的权利归其各自权利人所有，并受各自许可证约束。你应自行遵守适用的第三方许可义务。
+
+C. Compliance / 合规义务
+You must comply with all applicable laws and regulations when using the Software.
+你在使用本软件时必须遵守所有适用的法律法规。
+
+D. No Waiver / 不弃权
+Failure by the Authors to enforce any provision shall not be deemed a waiver of future enforcement of that or any other
+provision.
+作者未行使或延迟行使任何权利，不构成对该权利或其他权利的放弃。
+
+E. Severability / 可分割性
+If any provision is held invalid or unenforceable, the remaining provisions shall remain in full force and effect.
+如本协议任何条款被认定为无效或不可执行，其余条款仍保持完全有效并继续执行。
