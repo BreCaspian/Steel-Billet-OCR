@@ -26,7 +26,7 @@ RUN pip install --upgrade pip \
     && pip install -r /app/requirements.txt
 
 COPY src /app/src
-COPY scripts /app/scripts
+COPY test/scripts /app/test/scripts
 COPY configs /app/configs
 COPY models /app/models
 COPY README.md /app/README.md

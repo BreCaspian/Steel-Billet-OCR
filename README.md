@@ -6,10 +6,6 @@
 - Stage-2: ROI 字符 OBB 检测 + 排序拼接（`models/Stage-2.pt`）
 - API 协议保持与原一阶段一致：`POST /ocr`，请求体仍为 `{"type":"base64","images":"..."}`
 
-旧目录保留用于追溯与对比：
-- `Industrial-TEXT-OCR/`（原一阶段）
-- `OCR-2Stage/`（测试 demo）
-
 ## 1. 新工程结构
 
 ```text
@@ -26,9 +22,8 @@ Steel-Billet-OCR/
     __init__.py
 
   test/scripts/
+    check_torch_env.sh
     infer_two_stage.py
-    train_stage2.py
-    convert_labelme_to_yolo_obb.py
 
   configs/
     yolo11-obb.yaml
@@ -104,23 +99,7 @@ python test/scripts/infer_two_stage.py \
 
 ## 4. 训练与数据转换
 
-LabelMe 转 YOLO-OBB：
-
-```bash
-python test/scripts/convert_labelme_to_yolo_obb.py \
-  --json-dir /path/to/json \
-  --out-dir /path/to/labels
-```
-
-训练 Stage-2：
-
-```bash
-python test/scripts/train_stage2.py \
-  --data configs/stage2_data.yaml \
-  --model yolo11s-obb.pt \
-  --init-weights models/Stage-1.pt \
-  --epochs 300 --imgsz 640 --batch 4 --device 0
-```
+当前仓库聚焦部署与推理流程。训练与标注转换脚本将在后续任务中按新结构补充。
 
 ## 5. 部署文档
 
