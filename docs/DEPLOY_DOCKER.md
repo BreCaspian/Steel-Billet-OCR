@@ -46,7 +46,7 @@
 ## 3. 构建镜像
 
 ```bash
-cd /home/yao/TEST/Steel-Billet-OCR
+cd /path/to/Steel-Billet-OCR
 docker build -t steel-billet-ocr:2stage-cpu .
 ```
 

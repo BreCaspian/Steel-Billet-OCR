@@ -8,9 +8,9 @@
 启动本地服务时请显式指定模型路径：
 
 ```bash
-export STAGE1_MODEL=/home/yao/TEST/Steel-Billet-OCR/models/stage-1/Stage-1-S-base.pt
-export STAGE2_MODEL=/home/yao/TEST/Steel-Billet-OCR/models/stage-2/Stage-2-S-base.pt
-export DATA_YAML=/home/yao/TEST/Steel-Billet-OCR/configs/data-char.yaml
+export STAGE1_MODEL=./models/stage-1/Stage-1-S-base.pt
+export STAGE2_MODEL=./models/stage-2/Stage-2-S-base.pt
+export DATA_YAML=./configs/data-char.yaml
 export CONF2=0.50
 uvicorn src.api:app --host 0.0.0.0 --port 8000
 ```
