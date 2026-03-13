@@ -38,6 +38,11 @@
 可选：
 - `configs/data-char.yaml`
 
+建议生产机器使用宿主机模型目录挂载，例如：
+
+- `/data/steel-billet-models/stage-1/Stage-1-S-base.pt`
+- `/data/steel-billet-models/stage-2/Stage-2-S-base.pt`
+
 ## 3. 构建镜像
 
 ```bash
@@ -47,15 +52,18 @@ docker build -t steel-billet-ocr:2stage-cpu .
 
 ## 4. 启动服务
 
+推荐生产运行方式：
+
 ```bash
 docker run -d --name steel-billet-ocr \
   -p 8000:8000 \
+  -v /data/steel-billet-models:/app/models:ro \
   -e STAGE1_MODEL=/app/models/stage-1/Stage-1-S-base.pt \
   -e STAGE2_MODEL=/app/models/stage-2/Stage-2-S-base.pt \
   -e DATA_YAML=/app/configs/data-char.yaml \
   -e DEVICE=cpu \
   -e CONF1=0.25 \
-  -e CONF2=0.55 \
+  -e CONF2=0.50 \
   -e IOU=0.7 \
   -e EXPAND1=1.08 \
   -e PAD=0.10 \
@@ -67,6 +75,12 @@ docker run -d --name steel-billet-ocr \
 ```bash
 curl http://127.0.0.1:8000/health
 ```
+
+建议确认返回结果中：
+
+- `success` 为 `true`
+- `stage1_model` 与 `stage2_model` 指向预期文件
+- `stage2_classes` 大于 `0`
 
 ```bash
 curl -X POST http://127.0.0.1:8000/ocr \
@@ -105,8 +119,20 @@ docker save steel-billet-ocr:2stage-cpu | gzip > steel-billet-ocr_2stage_cpu.tar
 gunzip -c steel-billet-ocr_2stage_cpu.tar.gz | docker load
 docker run -d --name steel-billet-ocr \
   -p 8000:8000 \
+  -v /data/steel-billet-models:/app/models:ro \
   -e STAGE1_MODEL=/app/models/stage-1/Stage-1-S-base.pt \
   -e STAGE2_MODEL=/app/models/stage-2/Stage-2-S-base.pt \
   -e DATA_YAML=/app/configs/data-char.yaml \
   steel-billet-ocr:2stage-cpu
 ```
+
+## 8. 投产前确认
+
+上线前至少完成以下检查：
+
+- 容器已正常启动，无循环重启
+- `docker logs` 中无模型加载失败报错
+- `/health` 正常
+- 使用现场样图成功调用 `/ocr`
+- 返回结果与人工预期一致
+- 监控系统已抓到 `/metrics`

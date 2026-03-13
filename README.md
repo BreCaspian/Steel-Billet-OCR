@@ -86,7 +86,7 @@ Steel-Billet-OCR/
 - Python 3.10
 - Linux
 - CPU 部署可直接使用当前 Dockerfile
-- ~~GPU 部署需自行调整 PyTorch 与运行参数~~
+- GPU 部署需自行调整 PyTorch 与运行参数
 
 安装依赖：
 
@@ -142,7 +142,7 @@ export STAGE2_MODEL=/home/yao/TEST/Steel-Billet-OCR/models/stage-2/Stage-2-S-bas
 export DATA_YAML=/home/yao/TEST/Steel-Billet-OCR/configs/data-char.yaml
 export DEVICE=cpu
 export CONF1=0.25
-export CONF2=0.55
+export CONF2=0.50
 export IOU=0.70
 export EXPAND1=1.08
 export PAD=0.10
@@ -203,6 +203,7 @@ uvicorn src.api:app --host 0.0.0.0 --port 8000
 ## 7. Docker 部署
 
 当前仓库提供 CPU 版 Dockerfile。
+由于 Git 仓库默认不包含模型权重，生产部署建议使用宿主机目录挂载模型文件，不建议依赖镜像内置权重。
 
 构建镜像：
 
@@ -211,24 +212,30 @@ cd /home/yao/TEST/Steel-Billet-OCR
 docker build -t steel-billet-ocr:2stage-cpu .
 ```
 
-运行容器时请显式指定模型路径：
+推荐生产运行方式：
 
 ```bash
 docker run -d --name steel-billet-ocr \
   -p 8000:8000 \
+  -v /data/steel-billet-models:/app/models:ro \
   -e STAGE1_MODEL=/app/models/stage-1/Stage-1-S-base.pt \
   -e STAGE2_MODEL=/app/models/stage-2/Stage-2-S-base.pt \
   -e DATA_YAML=/app/configs/data-char.yaml \
   -e DEVICE=cpu \
   -e CONF1=0.25 \
-  -e CONF2=0.55 \
+  -e CONF2=0.50 \
   -e IOU=0.7 \
   -e EXPAND1=1.08 \
   -e PAD=0.10 \
   steel-billet-ocr:2stage-cpu
 ```
 
-如果镜像内没有模型，请自行挂载模型目录，例如：
+模型目录示例：
+
+- `/data/steel-billet-models/stage-1/Stage-1-S-base.pt`
+- `/data/steel-billet-models/stage-2/Stage-2-S-base.pt`
+
+如果你确实已经把模型打进镜像，也可以不挂载模型目录：
 
 ```bash
 docker run -d --name steel-billet-ocr \
@@ -260,7 +267,19 @@ docker run -d --name steel-billet-ocr \
 - `test/images/` 用于本地快速回归验证
 - `test/output/` 用于存放推理结果，不建议提交大批量生成文件
 
-## 9. 关键参数说明
+## 9. 投产前检查清单
+
+建议在工厂上线前逐项确认：
+
+- Stage-1 与 Stage-2 模型文件均已放到约定目录
+- `DATA_YAML` 指向 `configs/data-char.yaml`
+- `GET /health` 返回 `success: true`
+- 通过 `test/images/` 或现场样图完成一次批量推理
+- 抽查 `predictions.csv` 与可视化结果，确认字符顺序正确
+- 使用真实调用方报文完成一次 `POST /ocr` 联调
+- 确认端口、防火墙、日志采集与监控抓取正常
+
+## 10. 关键参数说明
 
 服务和脚本共用的主要参数如下：
 
@@ -274,7 +293,7 @@ docker run -d --name steel-billet-ocr \
 - `EXPAND1`：Stage-1 框外扩比例
 - `PAD`：透视变换时 ROI 边缘补白比例
 
-## 10. 当前边界
+## 11. 当前边界
 
 当前仓库已覆盖：
 
@@ -290,6 +309,6 @@ docker run -d --name steel-billet-ocr \
 - 自动化单元测试
 - 字符规则纠错与后处理模板
 
-## 11. 许可
+## 12. 许可
 
 许可证见 [LICENSE](/home/yao/TEST/Steel-Billet-OCR/LICENSE)。

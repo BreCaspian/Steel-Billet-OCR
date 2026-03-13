@@ -18,7 +18,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--output", default="test/output", help="Output directory")
     p.add_argument("--device", default="cpu", help="cpu|0|1...")
     p.add_argument("--conf1", type=float, default=0.25)
-    p.add_argument("--conf2", type=float, default=0.55)
+    p.add_argument("--conf2", type=float, default=0.50)
     p.add_argument("--iou", type=float, default=0.7)
     p.add_argument("--expand1", type=float, default=1.08)
     p.add_argument("--pad", type=float, default=0.10)
