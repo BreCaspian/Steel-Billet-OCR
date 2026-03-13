@@ -4,9 +4,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     CUDA_VISIBLE_DEVICES="" \
-    STAGE1_MODEL=/app/models/Stage-1.pt \
-    STAGE2_MODEL=/app/models/Stage-2.pt \
-    DATA_YAML=/app/models/data.yaml \
+    STAGE1_MODEL=/app/models/stage-1/Stage-1-S-base.pt \
+    STAGE2_MODEL=/app/models/stage-2/Stage-2-S-base.pt \
+    DATA_YAML=/app/configs/data-char.yaml \
     DEVICE=cpu \
     CONF1=0.25 \
     CONF2=0.55 \
@@ -31,8 +31,7 @@ COPY configs /app/configs
 COPY models /app/models
 COPY README.md /app/README.md
 
-RUN test -f /app/models/Stage-1.pt \
-    && test -f /app/models/Stage-2.pt
+RUN test -f /app/configs/data-char.yaml
 
 EXPOSE 8000
 

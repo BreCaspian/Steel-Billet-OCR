@@ -12,10 +12,10 @@ from src.two_stage_engine import TwoStageOBBEngine
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Two-stage OBB batch inference")
-    p.add_argument("--stage1", default="models/Stage-1.pt", help="Stage-1 model (.pt)")
-    p.add_argument("--stage2", default="models/Stage-2.pt", help="Stage-2 model (.pt)")
-    p.add_argument("--source", default="images", help="Image directory")
-    p.add_argument("--output", default="output", help="Output directory")
+    p.add_argument("--stage1", default="models/stage-1/Stage-1-S-base.pt", help="Stage-1 model (.pt)")
+    p.add_argument("--stage2", default="models/stage-2/Stage-2-S-base.pt", help="Stage-2 model (.pt)")
+    p.add_argument("--source", default="test/images", help="Image directory")
+    p.add_argument("--output", default="test/output", help="Output directory")
     p.add_argument("--device", default="cpu", help="cpu|0|1...")
     p.add_argument("--conf1", type=float, default=0.25)
     p.add_argument("--conf2", type=float, default=0.55)

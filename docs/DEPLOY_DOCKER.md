@@ -1,6 +1,7 @@
 # 工厂部署指南（Docker CPU，二阶段）
 
 本指南用于工厂现场部署二阶段识别服务（Stage-1 + Stage-2）。
+通信协议保持不变，仍为 `POST /ocr` 且请求体为 `{"type":"base64","images":"..."}`。
 
 ## 1. 接口规范
 
@@ -30,12 +31,12 @@
 
 ## 2. 构建前检查
 
-确保模型文件在仓库内：
-- `models/Stage-1.pt`
-- `models/Stage-2.pt`
+请先准备模型文件。模型默认不直接提交到 Git 仓库，可按以下目录放置：
+- `models/stage-1/Stage-1-S-base.pt`
+- `models/stage-2/Stage-2-S-base.pt`
 
 可选：
-- `models/data.yaml`
+- `configs/data-char.yaml`
 
 ## 3. 构建镜像
 
@@ -49,6 +50,9 @@ docker build -t steel-billet-ocr:2stage-cpu .
 ```bash
 docker run -d --name steel-billet-ocr \
   -p 8000:8000 \
+  -e STAGE1_MODEL=/app/models/stage-1/Stage-1-S-base.pt \
+  -e STAGE2_MODEL=/app/models/stage-2/Stage-2-S-base.pt \
+  -e DATA_YAML=/app/configs/data-char.yaml \
   -e DEVICE=cpu \
   -e CONF1=0.25 \
   -e CONF2=0.55 \
@@ -99,5 +103,10 @@ docker save steel-billet-ocr:2stage-cpu | gzip > steel-billet-ocr_2stage_cpu.tar
 
 ```bash
 gunzip -c steel-billet-ocr_2stage_cpu.tar.gz | docker load
-docker run -d --name steel-billet-ocr -p 8000:8000 steel-billet-ocr:2stage-cpu
+docker run -d --name steel-billet-ocr \
+  -p 8000:8000 \
+  -e STAGE1_MODEL=/app/models/stage-1/Stage-1-S-base.pt \
+  -e STAGE2_MODEL=/app/models/stage-2/Stage-2-S-base.pt \
+  -e DATA_YAML=/app/configs/data-char.yaml \
+  steel-billet-ocr:2stage-cpu
 ```

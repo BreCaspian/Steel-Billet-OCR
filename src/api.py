@@ -20,9 +20,9 @@ class OCRRequest(BaseModel):
 
 app = FastAPI(title="Steel Billet OCR API (Two-Stage OBB)", version="2.0")
 
-STAGE1_MODEL = os.environ.get("STAGE1_MODEL", "/app/models/Stage-1.pt")
-STAGE2_MODEL = os.environ.get("STAGE2_MODEL", "/app/models/Stage-2.pt")
-DATA_YAML = os.environ.get("DATA_YAML", "/app/models/data.yaml")
+STAGE1_MODEL = os.environ.get("STAGE1_MODEL", "/app/models/stage-1/Stage-1-S-base.pt")
+STAGE2_MODEL = os.environ.get("STAGE2_MODEL", "/app/models/stage-2/Stage-2-S-base.pt")
+DATA_YAML = os.environ.get("DATA_YAML", "/app/configs/data-char.yaml")
 DEVICE = os.environ.get("DEVICE", "cpu")
 CONF1 = float(os.environ.get("CONF1", "0.25"))
 CONF2 = float(os.environ.get("CONF2", "0.55"))
