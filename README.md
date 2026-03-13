@@ -137,6 +137,7 @@ python test/scripts/infer_two_stage.py \
 本地直接启动：
 
 ```bash
+cd /path/to/Steel-Billet-OCR
 export STAGE1_MODEL=./models/stage-1/Stage-1-S-base.pt
 export STAGE2_MODEL=./models/stage-2/Stage-2-S-base.pt
 export DATA_YAML=./configs/data-char.yaml
