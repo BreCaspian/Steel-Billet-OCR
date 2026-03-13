@@ -86,7 +86,7 @@ Steel-Billet-OCR/
 - Python 3.10
 - Linux
 - CPU 部署可直接使用当前 Dockerfile
-- GPU 部署需自行调整 PyTorch 与运行参数
+- ~~GPU 部署需自行调整 PyTorch 与运行参数~~
 
 安装依赖：
 
