@@ -19,8 +19,8 @@
 
 核心实现位于：
 
-- [src/api.py](/home/yao/TEST/Steel-Billet-OCR/src/api.py)
-- [src/two_stage_engine.py](/home/yao/TEST/Steel-Billet-OCR/src/two_stage_engine.py)
+- `src/api.py`
+- `src/two_stage_engine.py`
 
 ## 2. 工程结构
 
@@ -58,8 +58,8 @@ Steel-Billet-OCR/
 
 模型权重默认不直接提交到 Git 仓库，模型下载地址记录在：
 
-- [models/stage-1/README.md](/home/yao/TEST/Steel-Billet-OCR/models/stage-1/README.md)
-- [models/stage-2/README.md](/home/yao/TEST/Steel-Billet-OCR/models/stage-2/README.md)
+- `models/stage-1/README.md`
+- `models/stage-2/README.md`
 
 当前目录约定如下：
 
@@ -91,7 +91,7 @@ Steel-Billet-OCR/
 安装依赖：
 
 ```bash
-cd /home/yao/TEST/Steel-Billet-OCR
+cd /path/to/Steel-Billet-OCR
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip
@@ -137,9 +137,9 @@ python test/scripts/infer_two_stage.py \
 本地直接启动：
 
 ```bash
-export STAGE1_MODEL=/home/yao/TEST/Steel-Billet-OCR/models/stage-1/Stage-1-S-base.pt
-export STAGE2_MODEL=/home/yao/TEST/Steel-Billet-OCR/models/stage-2/Stage-2-S-base.pt
-export DATA_YAML=/home/yao/TEST/Steel-Billet-OCR/configs/data-char.yaml
+export STAGE1_MODEL=./models/stage-1/Stage-1-S-base.pt
+export STAGE2_MODEL=./models/stage-2/Stage-2-S-base.pt
+export DATA_YAML=./configs/data-char.yaml
 export DEVICE=cpu
 export CONF1=0.25
 export CONF2=0.50
@@ -208,7 +208,7 @@ uvicorn src.api:app --host 0.0.0.0 --port 8000
 构建镜像：
 
 ```bash
-cd /home/yao/TEST/Steel-Billet-OCR
+cd /path/to/Steel-Billet-OCR
 docker build -t steel-billet-ocr:2stage-cpu .
 ```
 
@@ -240,7 +240,6 @@ docker run -d --name steel-billet-ocr \
 ```bash
 docker run -d --name steel-billet-ocr \
   -p 8000:8000 \
-  -v /data/steel-billet-models:/app/models \
   -e STAGE1_MODEL=/app/models/stage-1/Stage-1-S-base.pt \
   -e STAGE2_MODEL=/app/models/stage-2/Stage-2-S-base.pt \
   -e DATA_YAML=/app/configs/data-char.yaml \
@@ -249,18 +248,18 @@ docker run -d --name steel-billet-ocr \
 
 更详细的部署说明见：
 
-- [docs/DEPLOY_DOCKER.md](/home/yao/TEST/Steel-Billet-OCR/docs/DEPLOY_DOCKER.md)
-- [docs/TEST_TUNNEL.md](/home/yao/TEST/Steel-Billet-OCR/docs/TEST_TUNNEL.md)
+- `docs/DEPLOY_DOCKER.md`
+- `docs/TEST_TUNNEL.md`
 
 ## 8. 测试资源说明
 
 仓库中保留了少量现场测试图片，位于：
 
-- [test/images](/home/yao/TEST/Steel-Billet-OCR/test/images)
+- `test/images`
 
 输出目录位于：
 
-- [test/output](/home/yao/TEST/Steel-Billet-OCR/test/output)
+- `test/output`
 
 说明：
 
