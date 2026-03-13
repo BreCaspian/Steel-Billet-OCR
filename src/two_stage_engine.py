@@ -31,7 +31,7 @@ class TwoStageOBBEngine:
         stage2_model: str,
         device: str = "cpu",
         conf1: float = 0.25,
-        conf2: float = 0.55,
+        conf2: float = 0.50,
         iou: float = 0.7,
         expand1: float = 1.08,
         pad: float = 0.10,
