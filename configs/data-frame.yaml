@@ -1,0 +1,7 @@
+path: e:/Dataset/dataset/yolo_obb_frame
+train: images/train
+val: images/val
+test: images/test
+nc: 1
+names:
+  0: frame

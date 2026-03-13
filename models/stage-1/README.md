@@ -1,0 +1,1 @@
+https://github.com/BreCaspian/Steel-Billet-OCR/releases/tag/models

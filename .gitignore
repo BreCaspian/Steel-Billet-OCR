@@ -20,14 +20,19 @@ Thumbs.db
 # Runtime outputs
 output/
 runs/
-test/output/
 test/log/
+models.zip
+
+# Local model artifacts
+models/**/*.pt
 
 # Local datasets
 images/
 dataset_stage2_obb/
-test/images/*
-!test/images/README.md
+!test/images/
+!test/images/**
+!test/output/
+!test/output/**
 
 # Keep legacy projects as reference
 # Industrial-TEXT-OCR/
