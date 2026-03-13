@@ -19,8 +19,8 @@
 
 核心实现位于：
 
-- `src/api.py`
-- `src/two_stage_engine.py`
+- [src/api.py](/home/yao/TEST/Steel-Billet-OCR/src/api.py)
+- [src/two_stage_engine.py](/home/yao/TEST/Steel-Billet-OCR/src/two_stage_engine.py)
 
 ## 2. 工程结构
 
@@ -58,8 +58,8 @@ Steel-Billet-OCR/
 
 模型权重默认不直接提交到 Git 仓库，模型下载地址记录在：
 
-- `models/stage-1/README.md`
-- `models/stage-2/README.md`
+- [models/stage-1/README.md](/home/yao/TEST/Steel-Billet-OCR/models/stage-1/README.md)
+- [models/stage-2/README.md](/home/yao/TEST/Steel-Billet-OCR/models/stage-2/README.md)
 
 当前目录约定如下：
 
@@ -91,7 +91,7 @@ Steel-Billet-OCR/
 安装依赖：
 
 ```bash
-cd /path/to/Steel-Billet-OCR
+cd /home/yao/TEST/Steel-Billet-OCR
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip
@@ -137,9 +137,9 @@ python test/scripts/infer_two_stage.py \
 本地直接启动：
 
 ```bash
-export STAGE1_MODEL=./models/stage-1/Stage-1-S-base.pt
-export STAGE2_MODEL=./models/stage-2/Stage-2-S-base.pt
-export DATA_YAML=./configs/data-char.yaml
+export STAGE1_MODEL=/home/yao/TEST/Steel-Billet-OCR/models/stage-1/Stage-1-S-base.pt
+export STAGE2_MODEL=/home/yao/TEST/Steel-Billet-OCR/models/stage-2/Stage-2-S-base.pt
+export DATA_YAML=/home/yao/TEST/Steel-Billet-OCR/configs/data-char.yaml
 export DEVICE=cpu
 export CONF1=0.25
 export CONF2=0.50
@@ -208,7 +208,7 @@ uvicorn src.api:app --host 0.0.0.0 --port 8000
 构建镜像：
 
 ```bash
-cd /path/to/Steel-Billet-OCR
+cd /home/yao/TEST/Steel-Billet-OCR
 docker build -t steel-billet-ocr:2stage-cpu .
 ```
 
@@ -249,18 +249,18 @@ docker run -d --name steel-billet-ocr \
 
 更详细的部署说明见：
 
-- `docs/DEPLOY_DOCKER.md`
-- `docs/TEST_TUNNEL.md`
+- [docs/DEPLOY_DOCKER.md](/home/yao/TEST/Steel-Billet-OCR/docs/DEPLOY_DOCKER.md)
+- [docs/TEST_TUNNEL.md](/home/yao/TEST/Steel-Billet-OCR/docs/TEST_TUNNEL.md)
 
 ## 8. 测试资源说明
 
 仓库中保留了少量现场测试图片，位于：
 
-- `test/images`
+- [test/images](/home/yao/TEST/Steel-Billet-OCR/test/images)
 
 输出目录位于：
 
-- `test/output`
+- [test/output](/home/yao/TEST/Steel-Billet-OCR/test/output)
 
 说明：
 
@@ -306,9 +306,23 @@ docker run -d --name steel-billet-ocr \
 
 - 完整训练脚本
 - 数据转换脚本
-- 自动化单元测试
-- 字符规则纠错与后处理模板
+
 
 ## 12. 许可
 
-许可证见 `LICENSE`。
+本项目采用仓库内的专有非商业许可协议，完整条款见 [`LICENSE`](./LICENSE)。
+
+该许可不是开源许可证，作者保留所有权利。除非你已经取得作者事先书面授权，否则本项目仅可用于非商业测试、评估、教学、课程实验、学术研究和有限范围内的学术交流。
+
+以下行为默认被明确禁止：
+
+- 将本项目用于任何商业用途，包括生产部署、业务系统上线、商业项目交付、招投标交付或盈利性运营
+- 以 API、SaaS、托管服务、远程调用或其他方式向第三方提供本项目能力
+- 传播、公开发布、共享、镜像、转让、出租或向第三方提供源码、模型、权重、Docker 镜像、部署包或其他可复现材料
+- 修改、改编、重构、翻译、制作衍生作品，或对本项目进行再发布、再分发、再许可
+
+需要特别注意：
+
+- 即使不收费，只要用于商业组织、生产场景、业务交付或第三方服务，也可能构成商业用途
+- 第三方依赖组件仍受其各自许可证约束，本仓库许可不替代也不改变第三方组件的授权条款
+- 如需商业使用、部署授权或其他超出本许可范围的用途，必须先按 [`LICENSE`](./LICENSE) 中的联系方式向作者申请书面授权
