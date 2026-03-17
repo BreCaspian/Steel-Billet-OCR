@@ -2,13 +2,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Sequence, Tuple
+from typing import Any, List, Sequence, Tuple
 
 import cv2
 import numpy as np
 from ultralytics import YOLO
 
 Point = Tuple[float, float]
+Quad = List[Point]
+MappedChar = Tuple[Quad, int, float]
 
 
 @dataclass
@@ -46,17 +48,31 @@ class TwoStageOBBEngine:
         self.pad = pad
 
     @staticmethod
-    def _to_quads(obb_obj) -> List[List[Point]]:
+    def _empty_result(status: str, stage1_conf: float = 0.0, stage1_quad: Sequence[Point] | None = None) -> TwoStageResult:
+        return TwoStageResult(
+            text="",
+            status=status,
+            stage1_conf=stage1_conf,
+            stage2_avg_conf=0.0,
+            score=0.0,
+            stage1_quad=list(stage1_quad or []),
+            char_quads=[],
+            char_labels=[],
+            char_scores=[],
+        )
+
+    @staticmethod
+    def _to_quads(obb_obj: Any) -> List[Quad]:
         if obb_obj is None or len(obb_obj) == 0:
             return []
         quads = obb_obj.xyxyxyxy.cpu().tolist()
-        return [[(float(p[0]), float(p[1])) for p in q] for q in quads]
+        return [[(float(px), float(py)) for px, py in quad] for quad in quads]
 
     @staticmethod
-    def _order_quad(quad: Sequence[Point]) -> List[Point]:
+    def _order_quad(quad: Sequence[Point]) -> Quad:
         pts = np.array(quad, dtype=np.float32)
-        c = np.mean(pts, axis=0)
-        angles = np.arctan2(pts[:, 1] - c[1], pts[:, 0] - c[0])
+        center = np.mean(pts, axis=0)
+        angles = np.arctan2(pts[:, 1] - center[1], pts[:, 0] - center[0])
         pts = pts[np.argsort(angles)]
         start = int(np.argmin(pts[:, 0] + pts[:, 1]))
         pts = np.vstack([pts[start:], pts[:start]])
@@ -64,28 +80,28 @@ class TwoStageOBBEngine:
 
     @staticmethod
     def _centroid(quad: Sequence[Point]) -> Point:
-        return (sum(p[0] for p in quad) / 4.0, sum(p[1] for p in quad) / 4.0)
+        return (sum(x for x, _ in quad) / 4.0, sum(y for _, y in quad) / 4.0)
 
     @staticmethod
-    def _clamp(v: float, lo: float, hi: float) -> float:
-        return max(lo, min(hi, v))
+    def _clamp(value: float, lo: float, hi: float) -> float:
+        return max(lo, min(hi, value))
 
-    def _expand_quad(self, quad: Sequence[Point], w: int, h: int) -> List[Point]:
+    def _expand_quad(self, quad: Sequence[Point], width: int, height: int) -> Quad:
         if self.expand1 <= 1.0:
             return [(float(x), float(y)) for x, y in quad]
-        cx = sum(p[0] for p in quad) / 4.0
-        cy = sum(p[1] for p in quad) / 4.0
-        out = []
+
+        cx, cy = self._centroid(quad)
+        expanded: Quad = []
         for x, y in quad:
             nx = cx + (x - cx) * self.expand1
             ny = cy + (y - cy) * self.expand1
-            out.append((self._clamp(nx, 0, w - 1), self._clamp(ny, 0, h - 1)))
-        return out
+            expanded.append((self._clamp(nx, 0, width - 1), self._clamp(ny, 0, height - 1)))
+        return expanded
 
-    def _build_warp(self, image_bgr: np.ndarray, quad: Sequence[Point]):
-        q = np.array(self._order_quad(quad), dtype=np.float32)
-        edge_w = max(np.linalg.norm(q[1] - q[0]), np.linalg.norm(q[2] - q[3]), 2.0)
-        edge_h = max(np.linalg.norm(q[2] - q[1]), np.linalg.norm(q[3] - q[0]), 2.0)
+    def _build_warp(self, image_bgr: np.ndarray, quad: Sequence[Point]) -> Tuple[np.ndarray, np.ndarray]:
+        ordered = np.array(self._order_quad(quad), dtype=np.float32)
+        edge_w = max(np.linalg.norm(ordered[1] - ordered[0]), np.linalg.norm(ordered[2] - ordered[3]), 2.0)
+        edge_h = max(np.linalg.norm(ordered[2] - ordered[1]), np.linalg.norm(ordered[3] - ordered[0]), 2.0)
         pad_x = edge_w * self.pad
         pad_y = edge_h * self.pad
         out_w = int(max(8, round(edge_w + 2 * pad_x)))
@@ -101,8 +117,8 @@ class TwoStageOBBEngine:
             dtype=np.float32,
         )
 
-        h_mat = cv2.getPerspectiveTransform(q, dst)
-        h_inv = cv2.getPerspectiveTransform(dst, q)
+        h_mat = cv2.getPerspectiveTransform(ordered, dst)
+        h_inv = cv2.getPerspectiveTransform(dst, ordered)
         warped = cv2.warpPerspective(
             image_bgr,
             h_mat,
@@ -113,85 +129,79 @@ class TwoStageOBBEngine:
         return warped, h_inv
 
     @staticmethod
-    def _map_quad(quad: Sequence[Point], h_inv: np.ndarray) -> List[Point]:
+    def _map_quad(quad: Sequence[Point], h_inv: np.ndarray) -> Quad:
         pts = np.array(quad, dtype=np.float32).reshape(1, 4, 2)
         mapped = cv2.perspectiveTransform(pts, h_inv).reshape(4, 2)
         return [(float(x), float(y)) for x, y in mapped]
 
-    def _sort_chars(self, quads_with_cls, string_quad: Sequence[Point]):
-        ax = string_quad[1][0] - string_quad[0][0]
-        ay = string_quad[1][1] - string_quad[0][1]
-        n = (ax * ax + ay * ay) ** 0.5
-        axis = (1.0, 0.0) if n < 1e-6 else (ax / n, ay / n)
-        origin = self._centroid(string_quad)
-        return sorted(
-            quads_with_cls,
-            key=lambda t: (self._centroid(t[0])[0] - origin[0]) * axis[0]
-            + (self._centroid(t[0])[1] - origin[1]) * axis[1],
-        )
-
-    def infer_bgr(self, image_bgr: np.ndarray) -> TwoStageResult:
-        if image_bgr is None or image_bgr.size == 0:
-            return TwoStageResult("", "read_failed", 0.0, 0.0, 0.0, [], [], [], [])
-
-        h, w = image_bgr.shape[:2]
-
-        r1 = self.model1.predict(
+    @staticmethod
+    def _predict_obb(model: YOLO, image_bgr: np.ndarray, conf: float, iou: float, device: str):
+        return model.predict(
             source=image_bgr,
-            conf=self.conf1,
-            iou=self.iou,
-            device=self.device,
+            conf=conf,
+            iou=iou,
+            device=device,
             verbose=False,
         )[0]
 
-        obb1 = r1.obb
-        if obb1 is None or len(obb1) == 0:
-            return TwoStageResult("", "stage1_no_detection", 0.0, 0.0, 0.0, [], [], [], [])
+    def _sort_chars(self, quads_with_cls: Sequence[MappedChar]) -> List[MappedChar]:
+        return sorted(quads_with_cls, key=lambda item: (self._centroid(item[0])[0], self._centroid(item[0])[1]))
 
-        confs1 = obb1.conf.cpu().tolist()
-        quads1 = self._to_quads(obb1)
-        best_idx = max(range(len(confs1)), key=lambda i: confs1[i])
-        stage1_quad = self._expand_quad(quads1[best_idx], w, h)
-        stage1_conf = float(confs1[best_idx])
+    @staticmethod
+    def _stage2_names(result: Any) -> dict[int, str]:
+        return {int(k): str(v) for k, v in getattr(result, "names", {}).items()}
+
+    def infer_bgr(self, image_bgr: np.ndarray) -> TwoStageResult:
+        if image_bgr is None or image_bgr.size == 0:
+            return self._empty_result("read_failed")
+
+        height, width = image_bgr.shape[:2]
+        stage1_result = self._predict_obb(self.model1, image_bgr, self.conf1, self.iou, self.device)
+        stage1_obb = stage1_result.obb
+        if stage1_obb is None or len(stage1_obb) == 0:
+            return self._empty_result("stage1_no_detection")
+
+        stage1_scores = stage1_obb.conf.cpu().tolist()
+        stage1_quads = self._to_quads(stage1_obb)
+        best_idx = max(range(len(stage1_scores)), key=stage1_scores.__getitem__)
+        stage1_conf = float(stage1_scores[best_idx])
+        stage1_quad = self._expand_quad(stage1_quads[best_idx], width, height)
 
         try:
             warp_bgr, h_inv = self._build_warp(image_bgr, stage1_quad)
         except Exception:
-            return TwoStageResult("", "warp_failed", stage1_conf, 0.0, 0.0, stage1_quad, [], [], [])
+            return self._empty_result("warp_failed", stage1_conf=stage1_conf, stage1_quad=stage1_quad)
 
-        r2 = self.model2.predict(
-            source=warp_bgr,
-            conf=self.conf2,
-            iou=self.iou,
-            device=self.device,
-            verbose=False,
-        )[0]
+        stage2_result = self._predict_obb(self.model2, warp_bgr, self.conf2, self.iou, self.device)
+        stage2_obb = stage2_result.obb
+        if stage2_obb is None or len(stage2_obb) == 0:
+            return self._empty_result("stage2_no_detection", stage1_conf=stage1_conf, stage1_quad=stage1_quad)
 
-        obb2 = r2.obb
-        if obb2 is None or len(obb2) == 0:
-            return TwoStageResult("", "stage2_no_detection", stage1_conf, 0.0, 0.0, stage1_quad, [], [], [])
+        names2 = self._stage2_names(stage2_result)
+        quads2 = self._to_quads(stage2_obb)
+        cls2 = [int(v) for v in stage2_obb.cls.cpu().tolist()]
+        conf2 = [float(v) for v in stage2_obb.conf.cpu().tolist()]
 
-        names2 = {int(k): str(v) for k, v in getattr(r2, "names", {}).items()}
-        quads2 = self._to_quads(obb2)
-        cls2 = [int(v) for v in obb2.cls.cpu().tolist()]
-        conf2 = [float(v) for v in obb2.conf.cpu().tolist()]
+        mapped_chars = [
+            (self._map_quad(quad, h_inv), cls_id, score)
+            for quad, cls_id, score in zip(quads2, cls2, conf2)
+        ]
+        ordered_chars = self._sort_chars(mapped_chars)
 
-        mapped = [(self._map_quad(q, h_inv), c, s) for q, c, s in zip(quads2, cls2, conf2)]
-        ordered = self._sort_chars(mapped, stage1_quad)
-
-        labels = [names2.get(c, str(c)) for _, c, _ in ordered]
-        scores = [s for _, _, s in ordered]
+        labels = [names2.get(cls_id, str(cls_id)) for _, cls_id, _ in ordered_chars]
+        scores = [score for _, _, score in ordered_chars]
         text = "".join(labels)
-        stage2_avg = float(sum(scores) / len(scores)) if scores else 0.0
-        final_score = min(stage1_conf, stage2_avg) if scores else 0.0
+        stage2_avg_conf = float(sum(scores) / len(scores)) if scores else 0.0
+        final_score = min(stage1_conf, stage2_avg_conf) if scores else 0.0
+
         return TwoStageResult(
             text=text,
             status="ok" if text else "stage2_no_detection",
             stage1_conf=stage1_conf,
-            stage2_avg_conf=stage2_avg,
+            stage2_avg_conf=stage2_avg_conf,
             score=final_score,
             stage1_quad=stage1_quad,
-            char_quads=[q for q, _, _ in ordered],
+            char_quads=[quad for quad, _, _ in ordered_chars],
             char_labels=labels,
             char_scores=scores,
         )
@@ -203,33 +213,29 @@ def load_names_from_yaml(data_yaml: Path) -> List[str]:
 
     lines = data_yaml.read_text(encoding="utf-8").splitlines()
     names: List[str] = []
+    indexed: dict[int, str] = {}
     in_names = False
-    indexed = {}
 
     for line in lines:
         raw = line.strip()
         if raw.startswith("names:"):
             in_names = True
             continue
-        if not in_names:
+        if not in_names or not raw:
             continue
-        if not raw:
-            continue
-
         if raw.startswith("-"):
             names.append(raw[1:].strip())
             continue
-
         if ":" in raw and raw.split(":", 1)[0].isdigit():
             k, v = raw.split(":", 1)
             indexed[int(k.strip())] = v.strip().strip('"').strip("'")
             continue
-
         if not line.startswith(" "):
             break
 
     if names:
         return names
     if indexed:
-        return [indexed[i] for i in sorted(indexed.keys())]
+        return [indexed[i] for i in sorted(indexed)]
     return []
+
