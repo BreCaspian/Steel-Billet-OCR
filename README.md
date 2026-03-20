@@ -1,5 +1,12 @@
 # Steel-Billet-OCR
 
+<p align="center">
+  <img src="test/images/1G3221H.jpg" width="32%" />
+  <img src="test/images/1G3222H.jpg" width="32%" />
+  <img src="test/images/1W3063H.jpg" width="32%" />
+</p>
+
+
 面向工厂现场的钢坯号二阶段 OCR 服务。工程职责只有两件事：
 
 - 提供 `POST /ocr` HTTP 接口
