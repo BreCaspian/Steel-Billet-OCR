@@ -1,37 +1,23 @@
-﻿path: e:/Dataset/dataset/yolo_obb_non_frame
+path: /home/rm/Workspace/OCR/Dataset/processed_chars
 train: images/train
 val: images/val
 test: images/test
-nc: 31
+task: obb
+nc: 16
 names:
-  - "-"
-  - "/"
-  - "0"
-  - "00"
-  - "1"
-  - "2"
-  - "22"
-  - "3"
-  - "4"
-  - "44"
-  - "5"
-  - "6"
-  - "7"
-  - "8"
-  - "88"
-  - "9"
-  - "A"
-  - "B"
-  - "C"
-  - "D"
-  - "E"
-  - "F"
-  - "G"
-  - "H"
-  - "O"
-  - "T"
-  - "U"
-  - "W"
-  - "X"
-  - "Y"
-  - "x"
+  0: 0
+  1: 1
+  2: 2
+  3: 3
+  4: 4
+  5: 5
+  6: 6
+  7: 7
+  8: 8
+  9: 9
+  10: C
+  11: D
+  12: G
+  13: H
+  14: W
+  15: X
