@@ -1,7 +1,8 @@
-path: e:/Dataset/dataset/yolo_obb_frame
+path: /home/rm/Workspace/OCR/Dataset/processed_frame
 train: images/train
 val: images/val
 test: images/test
+task: obb
 nc: 1
 names:
   0: frame
