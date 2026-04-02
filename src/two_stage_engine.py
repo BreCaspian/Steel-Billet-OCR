@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, List, Sequence, Tuple
@@ -32,6 +33,7 @@ class TwoStageOBBEngine:
         self,
         stage1_model: str,
         stage2_model: str,
+        id_json: str = "configs/id.json",
         device: str = "cpu",
         conf1: float = 0.25,
         conf2: float = 0.6,
@@ -42,6 +44,7 @@ class TwoStageOBBEngine:
         self.model1 = YOLO(stage1_model, task="obb")
         self.model2 = YOLO(stage2_model, task="obb")
         self.device = device
+        self.valid_ids = load_ids_from_json(Path(id_json))
         self.conf1 = conf1
         self.conf2 = conf2
         self.iou = iou
@@ -227,6 +230,16 @@ class TwoStageOBBEngine:
     def _stage2_names(result: Any) -> dict[int, str]:
         return {int(k): str(v) for k, v in getattr(result, "names", {}).items()}
 
+    def _resolve_text_with_id_dict(self, text: str) -> str:
+        if not text or not self.valid_ids:
+            return text
+        if text in self.valid_ids:
+            return text
+        reversed_text = text[::-1]
+        if reversed_text in self.valid_ids:
+            return reversed_text
+        return text
+
     def infer_bgr(self, image_bgr: np.ndarray) -> TwoStageResult:
         if image_bgr is None or image_bgr.size == 0:
             return self._empty_result("read_failed")
@@ -275,7 +288,7 @@ class TwoStageOBBEngine:
         ordered_chars = self._sort_chars(filtered_chars)
         labels = [names2.get(cls_id, str(cls_id)) for _, cls_id, _ in ordered_chars]
         ordered_scores = [score for _, _, score in ordered_chars]
-        text = "".join(labels)
+        text = self._resolve_text_with_id_dict("".join(labels))
         stage2_avg_conf = float(sum(ordered_scores) / len(ordered_scores)) if ordered_scores else 0.0
         final_score = min(stage1_conf, stage2_avg_conf) if ordered_scores else 0.0
 
@@ -324,3 +337,13 @@ def load_names_from_yaml(data_yaml: Path) -> List[str]:
         return [indexed[i] for i in sorted(indexed)]
     return []
 
+
+def load_ids_from_json(id_json: Path) -> set[str]:
+    if not id_json.exists():
+        return set()
+
+    data = json.loads(id_json.read_text(encoding="utf-8"))
+    ids = data.get("ids", [])
+    if not isinstance(ids, list):
+        return set()
+    return {str(item) for item in ids}
